@@ -1,0 +1,21 @@
+# Evitar subir entornos virtuales
+venv/
+.env
+*.env
+
+# Archivos de logs
+*.log
+*log.txt
+
+# Archivos temporales o de cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de configuración de editor
+.vscode/
+.idea/
+
+# Archivos de test
+tests/
