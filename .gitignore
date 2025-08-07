@@ -19,3 +19,7 @@ __pycache__/
 
 # Archivos de test
 tests/
+
+# Archivos de respaldo
+*.bak
+respaldo-remoto/
