@@ -1,0 +1,25 @@
+name: Actualización Semanal Completa
+
+on:
+  schedule:
+    - cron: '50 16 * * *'  # 13:50 ARG = 16:50 UTC
+  workflow_dispatch:
+
+jobs:
+  weekly:
+    runs-on: windows-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar proceso completo
+        run: ./weekly_update.bat
