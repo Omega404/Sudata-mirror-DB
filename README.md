@@ -25,37 +25,7 @@ Además, enriquece la base con:
 
 ---
 
-## 📁 Estructura del proyecto
-
-Sudata-BCRA/
-│
-├── data/
-│ ├── csv/ # Archivos CSV originales para la base de ventas
-│ └── aux_publicacion_inmuebles.csv # Links de propiedades scrapeadas desde Zonaprop
-│
-├── logs/ # Logs de ejecución
-│
-├── scripts/ # Scripts modulares
-│ ├── bcra_fetch.py # Ingesta desde API del BCRA
-│ ├── csv_loader.py # Carga CSV → Base de datos
-│ ├── add_foreing_keys.py # Agrega claves foráneas
-│ ├── extract.py # Extracción desde base local
-│ ├── load.py # Carga a base espejo
-│ ├── database.py # Motor de conexión SQLAlchemy
-│ ├── logger.py # Utilidad de logging
-│ ├── web_scrapper.py # Extrae links de Zonaprop (scraping inicial)
-│ └── data_scrapper.py # Extrae información detallada de cada propiedad
-│
-├── main.py # Ejecuta BCRA + réplica
-├── main_bcra.py # Solo ingesta BCRA
-├── main_mirror.py # Solo réplica de base
-├── reset_and_reload.py # Reinicializa desde CSV
-├── DB_Mirror.py # Réplica local automática (programador)
-├── requirements.txt # Librerías requeridas
-├── .env # Variables de entorno (local, NO subir)
-└── .github/workflows/ # Acciones automatizadas
-
-📁 scripts/
+## 📁 scripts/
 1. database.py
 Función: Obtiene motores de conexión SQLAlchemy para bases de datos.
 
