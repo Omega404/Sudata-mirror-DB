@@ -1,20 +1,17 @@
-name: 📅 Actualización Semanal (BCRA + Mirror)
+
+name: Actualización semanal de datos
 
 on:
   schedule:
-    - cron: '0 5 * * 6'  # Sábados a las 2 AM (UTC+3)
-  workflow_dispatch:
-
-env:
-  ORIGIN_DB: ${{ secrets.ORIGIN_DB }}
-  DEST_DB: ${{ secrets.DEST_DB }}
+    - cron: '0 5 * * 6'  # 🔄 Sabado a las 2:00 PM (hora Argentina)
+  workflow_dispatch:     # Permite ejecución manual desde GitHub
 
 jobs:
-  run-weekly:
-    runs-on: windows-latest
+  run-sync:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: ⬇️ Clonar repositorio
+      - name: 📥 Clonar repositorio
         uses: actions/checkout@v3
 
       - name: 🐍 Configurar Python
@@ -22,9 +19,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: 📦 Instalar dependencias
-        run: pip install -r requirements.txt
-
+      - name: 💾 Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: 🔐 Cargar variables de entorno
+        run: |
+          echo "ORIGIN_DB=${{ secrets.ORIGIN_DB }}" >> .env
+          echo "DEST_DB=${{ secrets.DEST_DB }}" >> .env
       - name: 🚀 Ejecutar actualización de BCRA
         run: python main_bcra.py
 
