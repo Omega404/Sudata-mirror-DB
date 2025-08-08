@@ -26,7 +26,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 🚀 Ejecutar actualización de BCRA
-        run: python scripts/main_bcra.py
+        run: python main_bcra.py
 
       - name: 🛰️ Ejecutar réplica de base de datos
-        run: python scripts/main_mirror.py
+        run: python main_mirror.py
