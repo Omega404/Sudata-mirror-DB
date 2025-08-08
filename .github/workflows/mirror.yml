@@ -1,25 +1,32 @@
-name: Actualización - Mirror
+name: Réplica diaria de base espejo
 
 on:
   schedule:
-    - cron: '35 16 * * *'  # 13:35 ARG = 16:35 UTC
-  workflow_dispatch:       # Permite ejecución manual
+    - cron: '0 5 * * 0-5'  # Todos los días excepto sábado, a las 2:00 AM UTC
+  workflow_dispatch:
 
 jobs:
-  mirror:
-    runs-on: windows-latest
+  run-mirror:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Clonar repositorio
+      - name: 📥 Clonar repositorio
         uses: actions/checkout@v3
 
-      - name: Configurar Python
+      - name: 🐍 Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Instalar dependencias
-        run: pip install -r requirements.txt
+      - name: 💾 Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-      - name: Ejecutar script de réplica
-        run: ./main_mirror.bat
+      - name: 🔐 Cargar variables de entorno
+        run: |
+          echo "ORIGIN_DB=${{ secrets.ORIGIN_DB }}" >> .env
+          echo "DEST_DB=${{ secrets.DEST_DB }}" >> .env
+
+      - name: 🛰️ Ejecutar réplica de base de datos
+        run: python main_mirror.py
