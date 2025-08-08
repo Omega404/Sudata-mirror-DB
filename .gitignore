@@ -19,7 +19,10 @@ __pycache__/
 
 # Archivos de test
 tests/
+links_clasificados.csv
 
 # Archivos de respaldo
 *.bak
+*.backup
+html_anuncios/
 respaldo-remoto/

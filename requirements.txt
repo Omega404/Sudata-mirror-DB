@@ -4,3 +4,6 @@ pandas
 python-dotenv
 certifi
 requests
+beautifulsoup4
+selenium
+webdriver-manager

@@ -1,11 +1,15 @@
-from database import get_engine
-from extract import extract_all_tables
-from load import load_all_tables
-from bcra_fetch import data_intake
+from scripts.database import get_engine
+from scripts.extract import extract_all_tables
+from scripts.load import load_all_tables
+from scripts.bcra_fetch import data_intake
 from datetime import datetime
 import time
+import os
 
-LOG_FILE = "main_log.txt"
+# Carpeta de logs
+LOG_FOLDER = "logs"
+os.makedirs(LOG_FOLDER, exist_ok=True)
+LOG_FILE = os.path.join(LOG_FOLDER, "main.log")
 
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -15,41 +19,40 @@ def log(message):
 
 start_time = time.time()
 
-log("🧠 INICIO DEL SCRIPT GENERAL")
-log(f"🕐 Hora de inicio: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-log("="*60)
+log("INICIO DEL SCRIPT GENERAL")
+log(f"Hora de inicio: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+log("=" * 60)
 
-# Paso 1: Ingesta de datos BCRA
-log("📥 PASO 1: Ingesta incremental desde la API del BCRA")
+# Ingesta de datos BCRA
+log("Ingesta incremental desde la API del BCRA")
 try:
     data_intake()
-    log("✅ Ingesta desde BCRA finalizada.")
+    log("Ingesta desde BCRA finalizada.")
 except Exception as e:
-    log(f"❌ Error en la ingesta BCRA: {e}")
+    log(f"Error en la ingesta BCRA: {e}")
 
-log("-"*60)
+log("-" * 60)
 
-# Paso 2: Extracción desde base local
-log("📤 PASO 2: Extracción de datos desde la base local")
+# Extracción desde base local
+log("Extracción de datos desde la base local")
 try:
     origin_engine = get_engine("ORIGIN_DB")
     data = extract_all_tables(origin_engine)
-    log("✅ Extracción de datos completada.")
+    log("Extracción de datos completada.")
 except Exception as e:
-    log(f"❌ Error durante la extracción: {e}")
+    log(f"Error durante la extracción: {e}")
     exit(1)
 
-log("-"*60)
+log("-" * 60)
 
-# Paso 3: Carga hacia la base espejo
-log("📡 PASO 3: Carga de datos a la base de réplica")
+# Carga hacia la base espejo
+log("Carga de datos a la base de réplica")
 try:
     replica_engine = get_engine("DEST_DB")
     load_all_tables(data, replica_engine)
-    log("✅ Carga de datos completada.")
+    log("Carga de datos completada.")
 except Exception as e:
-    log(f"❌ Error durante la carga: {e}")
+    log(f"Error durante la carga: {e}")
 
-log("="*60)
-log(f"🕔 Script finalizado en {round(time.time() - start_time, 2)} segundos")
-
+log("=" * 60)
+log(f"Script finalizado en {round(time.time() - start_time, 2)} segundos")

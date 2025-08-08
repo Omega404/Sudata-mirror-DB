@@ -6,7 +6,7 @@ import os
 from dotenv import load_dotenv
 import logging
 
-# Configurar logger para guardar en un archivo .txt
+# Configuracion de logger para guardardado en formato .txt
 logging.basicConfig(
     filename="bcra_ingesta_log.txt",
     level=logging.INFO,
@@ -18,7 +18,7 @@ logging.basicConfig(
 load_dotenv()
 DB_URL = os.getenv("ORIGIN_DB")
 if DB_URL is None:
-    raise ValueError("❌ La variable ORIGIN_DB no está definida en el entorno.")
+    raise ValueError("La variable ORIGIN_DB no está definida en el entorno.")
 engine = create_engine(DB_URL)
 
 
@@ -41,7 +41,7 @@ def create_table():
         exists = result.scalar()
 
         if exists:  # Abrir tabla
-            print(f"📂 Tabla '{TABLE_NAME}' encontrada.")
+            print(f"Tabla '{TABLE_NAME}' encontrada.")
         else:       # Crear tabla
             conn.execute(text(f"""
                 CREATE TABLE {TABLE_NAME} (
@@ -105,15 +105,15 @@ def data_intake():
     ultima_fecha = get_last_date()
     if ultima_fecha:
         fecha_desde = ultima_fecha + timedelta(days=1)
-        print(f"🔁 Modo incremental desde {fecha_desde}")
+        print(f"Modelo incremental desde {fecha_desde}")
     else:
         fecha_desde = fecha_inicio
-        print(f"🆕 Modo inicial desde {fecha_desde}")
+        print(f"Modelo inicial desde {fecha_desde}")
 
     dias_diferencia = (fecha_hoy - fecha_desde).days
 
     if dias_diferencia < 0:
-        print("⚠️ La fecha más reciente en la tabla es posterior a la fecha actual.")
+        print("La fecha más reciente en la tabla es posterior a la fecha actual.")
         return
 
     total_insertados = 0
@@ -125,22 +125,22 @@ def data_intake():
 
             if not datos:
                 if fecha_objetivo == fecha_hoy:
-                    print(f"⚠️ No se encontraron nuevas cotizaciones disponibles para {fecha_objetivo}.")
+                    print(f"No se encontraron nuevas cotizaciones disponibles para {fecha_objetivo}.")
                 continue
 
             df = data_process(datos)
             cantidad = upload_data(df)
             total_insertados += cantidad
-            print(f"📅 Cotizaciones del {fecha_objetivo} procesadas correctamente.")
+            print(f"Cotizaciones del {fecha_objetivo} procesadas correctamente.")
 
         except Exception as e:
-            print(f"❌ Error al procesar {fecha_objetivo}: {e}")
+            print(f"Error al procesar {fecha_objetivo}: {e}")
 
     # Resumen de la ingesta
     if total_insertados > 0:
-        resumen = f"✅ Total de registros insertados: {total_insertados}"
+        resumen = f"Total de registros insertados: {total_insertados}"
     else:
-        resumen = "⚠️ No se insertaron nuevos registros."
+        resumen = "No se insertaron nuevos registros."
 
     # Log del resumen
     print(f"\n{resumen}")
@@ -149,5 +149,5 @@ def data_intake():
 
 # Punto de entrada principal
 if __name__ == "__main__":
-    print("🚀 Iniciando ingesta de cotizaciones BCRA...")
+    print("Iniciando ingesta de cotizaciones BCRA...")
     data_intake()
