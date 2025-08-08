@@ -1,0 +1,25 @@
+name: Actualización - Mirror
+
+on:
+  schedule:
+    - cron: '35 16 * * *'  # 13:35 ARG = 16:35 UTC
+  workflow_dispatch:       # Permite ejecución manual
+
+jobs:
+  mirror:
+    runs-on: windows-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Ejecutar script de réplica
+        run: ./main_mirror.bat
