@@ -1,25 +1,32 @@
-name: Actualización Semanal Completa
+name: 📅 Actualización Semanal (BCRA + Mirror)
 
 on:
   schedule:
-    - cron: '50 16 * * *'  # 13:50 ARG = 16:50 UTC
+    - cron: '0 5 * * 6'  # Sábados a las 2 AM (UTC+3)
   workflow_dispatch:
 
+env:
+  ORIGIN_DB: ${{ secrets.ORIGIN_DB }}
+  DEST_DB: ${{ secrets.DEST_DB }}
+
 jobs:
-  weekly:
+  run-weekly:
     runs-on: windows-latest
 
     steps:
-      - name: Clonar repositorio
+      - name: ⬇️ Clonar repositorio
         uses: actions/checkout@v3
 
-      - name: Configurar Python
+      - name: 🐍 Configurar Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      - name: Instalar dependencias
+      - name: 📦 Instalar dependencias
         run: pip install -r requirements.txt
 
-      - name: Ejecutar proceso completo
-        run: ./weekly_update.bat
+      - name: 🚀 Ejecutar actualización de BCRA
+        run: python scripts/main_bcra.py
+
+      - name: 🛰️ Ejecutar réplica de base de datos
+        run: python scripts/main_mirror.py
