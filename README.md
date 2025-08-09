@@ -245,3 +245,8 @@ Borra completamente las tablas indicadas.
 No solicita confirmación.
 Solo debe usarse en entornos controlados (como desarrollo o restauración).
 bash: python reset_and_reload.py
+
+# ⚙ reespaldo en la nube
+Por medio de la actualizacion de la base de datos espejo, se realiza por medio del uso de github actions, se 
+realiza una copia de seguridad de una base de datos a otra, en este caso de una base en sudata, que ya era una base
+espejo de una base de datos local, se le realiza una copia en neon.
