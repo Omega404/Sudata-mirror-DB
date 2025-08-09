@@ -116,7 +116,7 @@ for i, link in enumerate(links_validos, start=1):
     })
 
 # === 5. Guardar resultados en CSV ===
-output_path = os.path.join("data", "csv", "inmueble_datos.csv")
+output_path = os.path.join("data", "inmueble_datos.csv")
 df = pd.DataFrame(resultados, columns=["titulo", "precio", "superficie", "direccion", "latitud", "longitud", "link"])
 df.to_csv(output_path, index=False)
 print(f"\n✅ Scraping finalizado. Resultados guardados en '{output_path}'")

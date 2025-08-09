@@ -3,6 +3,10 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 
+# Ruta base del proyecto (un nivel arriba de /scripts/)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV_DIR = os.path.join(BASE_DIR, "data", "csv")
+
 # Cargar variables de entorno
 load_dotenv()
 DB_URL = os.getenv("ORIGIN_DB")
@@ -35,6 +39,9 @@ config_columnas = {
 }
 
 def cargar_csvs_en_lote(directorio_csv: str):
+    if not os.path.exists(directorio_csv):
+        raise FileNotFoundError(f"No se encontró el directorio: {directorio_csv}")
+
     for archivo in os.listdir(directorio_csv):
         if archivo.endswith(".csv"):
             ruta = os.path.join(directorio_csv, archivo)
@@ -97,3 +104,6 @@ def cargar_csvs_en_lote(directorio_csv: str):
 
             except Exception as e:
                 print(f"Error al procesar '{nombre_tabla}': {e}")
+
+if __name__ == "__main__":
+    cargar_csvs_en_lote(CSV_DIR)

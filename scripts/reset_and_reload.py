@@ -2,7 +2,7 @@ import os
 from sqlalchemy import create_engine, text
 from dotenv import load_dotenv
 from scripts.csv_loader import cargar_csvs_en_lote
-from scripts.add_foreing_keys import check_and_add_foreign_keys
+from scripts.add_foreign_keys import check_and_add_foreign_keys
 
 # Cargar variables de entorno
 load_dotenv()
