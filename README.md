@@ -250,3 +250,7 @@ bash: python reset_and_reload.py
 Por medio de la actualizacion de la base de datos espejo, se realiza por medio del uso de github actions, se 
 realiza una copia de seguridad de una base de datos a otra, en este caso de una base en sudata, que ya era una base
 espejo de una base de datos local, se le realiza una copia en neon.
+
+# Notas
+Posibles necesidad de realizar un bypass a la validacion de scripts del entorno virtual
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
